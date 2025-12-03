@@ -15,7 +15,7 @@ export default function Blog() {
           {/* Hero Text */}
           <div className="text-center mb-20">
             <h1 className="text-7xl md:text-9xl font-black text-amber-900 leading-none">
-              
+              {/* WOMEN'S COLLECTION<br />2025 */}
             </h1>
             <p className="mt-8 text-xl text-amber-800 font-light max-w-2xl mx-auto">
               Timeless elegance meets modern sophistication. Curated for the woman who defines luxury.

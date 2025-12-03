@@ -53,7 +53,7 @@ export default function AboutPage() {
               className="w-72 h-80 md:w-80 md:h-96 rounded-3xl bg-[#f0e6dc] overflow-hidden shadow-xl"
             >
               <img
-                src={temii}
+                src=
                 alt= "temi"
                 className="w-full h-full object-cover"
               />

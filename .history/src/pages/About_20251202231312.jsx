@@ -3,7 +3,6 @@ import React from "react";
 import "./flipcard.css";
 import FlipCard from "./FlipCard";
 import { motion } from "framer-motion";
-import temii from "./temii.jpeg";
 
 export default function AboutPage() {
   return (
@@ -21,7 +20,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
           <div className="md:col-span-7 space-y-6">
             <p className="text-sm text-[#c8a889] font-semibold tracking-widest">
-          
+              ABOUT ME
             </p>
 
             <h2 className="text-4xl md:text-5xl font-extrabold text-[#3b2f2a]">
@@ -53,8 +52,8 @@ export default function AboutPage() {
               className="w-72 h-80 md:w-80 md:h-96 rounded-3xl bg-[#f0e6dc] overflow-hidden shadow-xl"
             >
               <img
-                src={temii}
-                alt= "temi"
+                src="/about.jpg"
+                alt="Temi"
                 className="w-full h-full object-cover"
               />
             </motion.div>

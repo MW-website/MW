@@ -3,7 +3,6 @@ import React from "react";
 import "./flipcard.css";
 import FlipCard from "./FlipCard";
 import { motion } from "framer-motion";
-import temii from "./temii.jpeg";
 
 export default function AboutPage() {
   return (
@@ -53,8 +52,8 @@ export default function AboutPage() {
               className="w-72 h-80 md:w-80 md:h-96 rounded-3xl bg-[#f0e6dc] overflow-hidden shadow-xl"
             >
               <img
-                src={temii}
-                alt= "temi"
+                src="/about.jpg"
+                alt="Temi"
                 className="w-full h-full object-cover"
               />
             </motion.div>

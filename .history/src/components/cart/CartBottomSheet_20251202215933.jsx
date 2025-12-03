@@ -15,7 +15,7 @@ export default function CartBottomSheet({ open, onClose }) {
       <div className="max-w-4xl mx-auto px-4">
         <div className="bg-white rounded-t-xl shadow-lg p-4">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold">Your Cart </h3>
+            <h3 className="font-semibold">Your Cart <h3>
             <div className="flex items-center gap-2">
               <button onClick={clearCart} className="text-sm text-gray-600">Clear</button>
               <button onClick={onClose} className="px-3 py-1 bg-gray-100 rounded">Close</button>

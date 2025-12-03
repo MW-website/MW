@@ -7,7 +7,24 @@ export default function Blog() {
 
   return (
     <>
-    
+      {/* Navbar - Cream */}
+      <nav className="fixed top-0 left-0 right-0 bg-[#faf7f0] shadow-sm z-50 border-b border-amber-100">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-amber-900">LUXE THREADS</h1>
+          <ul className="flex space-x-12 text-amber-900 font-medium text-lg">
+            <li className="cursor-pointer hover:text-amber-700 transition">Home</li>
+            <li className="cursor-pointer hover:text-amber-700 transition">Shop</li>
+            <li
+              className="cursor-pointer hover:text-amber-700 transition font-bold"
+              onClick={() => setShowBlog(true)}
+            >
+              Blog
+            </li>
+            <li className="cursor-pointer hover:text-amber-700 transition">Contact</li>
+          </ul>
+        </div>
+      </nav>
+
       {/* Hero + 2 Cards Section */}
       <div className="min-h-screen bg-[#faf7f0] pt-32 pb-20">
         <div className="max-w-7xl mx-auto px-6">
@@ -15,7 +32,7 @@ export default function Blog() {
           {/* Hero Text */}
           <div className="text-center mb-20">
             <h1 className="text-7xl md:text-9xl font-black text-amber-900 leading-none">
-              
+              WOMEN'S COLLECTION<br />2025
             </h1>
             <p className="mt-8 text-xl text-amber-800 font-light max-w-2xl mx-auto">
               Timeless elegance meets modern sophistication. Curated for the woman who defines luxury.
