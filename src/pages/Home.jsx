@@ -12,6 +12,7 @@
 **/
 // src/pages/Home.jsx
 import React from "react";
+import { motion } from "framer-motion";
 import useGsapReveal from "../hooks/useGsapReveal";
 import AppleHero from "../components/home/AppleHero";
 import Showcase from "../components/home/Showcase";
@@ -24,13 +25,18 @@ export default function Home() {
   useGsapReveal(".gsap-reveal");
 
   return (
-    <main className="min-h-screen bg-[var(--color-mw-beige)] text-gray-800">
+    <motion.main
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="min-h-screen bg-[var(--color-mw-beige)] text-gray-800"
+    >
       <AppleHero />
       <Showcase />
       <Collections />
       <Features />
       <Newsletter />
       <Footer />
-    </main>
+    </motion.main>
   );
 }

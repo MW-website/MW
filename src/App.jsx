@@ -12,9 +12,10 @@
 **/
 // src/App.jsx — MW Header everywhere
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Header from "./components/Header/Header";
+import MiniFooter from "./components/home/MiniFooter";
 
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
@@ -28,6 +29,12 @@ import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 
 export default function App() {
+  function MiniFooterGuard() {
+    // useLocation must be called inside a Router — this component is rendered inside BrowserRouter
+    const location = useLocation();
+    return location.pathname !== "/" ? <MiniFooter /> : null;
+  }
+
   return (
     <BrowserRouter>
       <Header />
@@ -44,6 +51,9 @@ export default function App() {
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/product/:slug" element={<ProductPage />} />
       </Routes>
+
+      {/* Render a compact mini footer on pages that don't render the full Footer component (Home renders the full Footer) */}
+      <MiniFooterGuard />
     </BrowserRouter>
   );
 }

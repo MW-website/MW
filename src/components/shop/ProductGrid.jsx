@@ -24,8 +24,8 @@ export default function ProductGrid({ products, layout = "default", onAddToCart,
   }
   const gridClass =
     layout === "fashion"
-    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-    : "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-x-5 gap-y-8";  return (
+    ? "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6"
+    : "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6";  return (
     <div className={gridClass}>
       {products.map((p) => (
         <ProductCard key={p.id} product={p} variant={layout === "fashion" ? "fashion" : "default"} onAddToCart={onAddToCart} onQuickView={onQuickView} />

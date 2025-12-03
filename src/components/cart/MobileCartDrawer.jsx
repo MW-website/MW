@@ -87,7 +87,7 @@ export default function MobileCartDrawer({ open, onClose }) {
               <div className="flex-1">
                 <div className="font-medium text-sm">{item.name}</div>
                 <div className="text-xs text-gray-500">
-                  ₦{item.price.toLocaleString()}
+                  ${item.price.toLocaleString()}
                 </div>
 
                 {/* QUANTITY */}
@@ -127,7 +127,7 @@ export default function MobileCartDrawer({ open, onClose }) {
           <div className="mt-4">
             <div className="flex justify-between text-sm font-medium mb-3">
               <span>Total:</span>
-              <span>₦{total.toLocaleString()}</span>
+              <span>${total.toLocaleString()}</span>
             </div>
 
             <Link

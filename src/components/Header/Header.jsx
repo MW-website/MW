@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { FiSearch, FiHeart } from "react-icons/fi";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
+import { FiInstagram, FiTwitter, FiMapPin } from "react-icons/fi";
 import MegaDropdown from "./MegaDropdown";
+import ShopDropdown from "./ShopDropdown";
 import CartBottomSheet from "../cart/CartBottomSheet";
 import { useCart } from "../../context/CartContext";
 import { useWishlist } from "../../context/WishlistContext";
@@ -10,6 +12,8 @@ import { useWishlist } from "../../context/WishlistContext";
 export default function Header() {
   const [cartOpen, setCartOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+  const currentCategory = searchParams.get("category");
   const { items, hideBadge: hideCartBadge, showBadge: showCartBadge } = useCart();
   const { wish, hideBadge: hideWishBadge, showBadge: showWishBadge } = useWishlist();
 
@@ -27,25 +31,34 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
 
         {/* LEFT */}
-        <div className="flex items-center gap-3 text-gray-600 text-sm">
-          <a href="#" className="hover:text-gray-900 transition hidden md:inline">Follow</a>
-          <a href="#" className="hover:text-gray-900 transition hidden md:inline">Support</a>
+        <div className="hidden lg:flex items-center gap-3 text-gray-600 text-sm">
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-gray-500">Follow</span>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition" aria-label="Instagram">
+              <FiInstagram size={16} />
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition" aria-label="Twitter">
+              <FiTwitter size={16} />
+            </a>
+          </div>
+          <span className="text-gray-300">|</span>
+          <a href="#" className="hover:text-gray-900 transition text-xs">Support</a>
         </div>
 
         {/* CENTER LOGO */}
         <div className="absolute left-1/2 -translate-x-1/2">
-          <Link to="/shop" className="text-2xl font-serif tracking-tight text-gray-900 hover:opacity-90 transition">
-            MW <span className="font-light italic text-gray-700">Store</span>
+          <Link to="/shop" className="text-xl sm:text-2xl font-serif tracking-tight text-gray-900 hover:opacity-90 transition">
+            MW <span className="font-light italic text-gray-700 text-sm sm:text-base">Store</span>
           </Link>
         </div>
 
         {/* RIGHT NAV */}
-        <nav className="hidden md:flex items-center gap-6 text-sm text-gray-700">
-          <Link to="/" className="hover:text-gray-900 transition">Home</Link>
-          <Link to="/about" className="hover:text-gray-900 transition">About</Link>
-          <Link to="/blog" className="hover:text-gray-900 transition">Blog</Link>
-          <Link to="/contact" className="hover:text-gray-900 transition">Contact</Link>
-          <Link to="/faq" className="hover:text-gray-900 transition">FAQ</Link>
+        <nav className="hidden md:flex items-center gap-3 lg:gap-6 text-xs lg:text-sm text-gray-700">
+          <Link to="/" className="hover:text-gray-900 transition hidden lg:inline">Home</Link>
+          <Link to="/about" className="hover:text-gray-900 transition hidden lg:inline">About</Link>
+          <Link to="/blog" className="hover:text-gray-900 transition hidden lg:inline">Blog</Link>
+          <Link to="/contact" className="hover:text-gray-900 transition hidden lg:inline">Contact</Link>
+          <Link to="/faq" className="hover:text-gray-900 transition hidden lg:inline">FAQ</Link>
 
           <MegaDropdown />
 
@@ -67,26 +80,57 @@ export default function Header() {
         </nav>
 
         {/* Mobile hamburger */}
-        <div className="md:hidden">
-          <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 rounded-md border border-gray-200 bg-white/60">
+        <div className="md:hidden flex items-center gap-2">
+          <button onClick={() => { handleWishlistClick(); window.location.href = '/wishlist'; }} className="p-2 hover:text-gray-900">
+            <FiHeart size={18} />
+            {showWishBadge && wish.length > 0 && <span className="absolute -top-1 -right-1 bg-pink-500 rounded-full w-2 h-2" />}
+          </button>
+          <button onClick={handleCartOpen} className="p-2 relative hover:text-gray-900">
+            <HiOutlineShoppingBag size={18} />
+            {showCartBadge && items.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-semibold">
+                {items.length}
+              </span>
+            )}
+          </button>
+          
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 rounded-md border border-gray-200">
             <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
         </div>
+
+        {/* Category indicator - positioned outside flex to prevent overlap */}
+        {currentCategory && (
+          <div className="md:hidden absolute right-2 top-3 text-xs bg-black text-white px-2.5 py-1 rounded whitespace-nowrap z-40">
+            {currentCategory}
+          </div>
+        )}
       </div>
 
       {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-sm">
-          <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-3">
-            <Link to="/" onClick={() => setMobileOpen(false)} className="text-sm text-gray-700">Home</Link>
-            <Link to="/about" onClick={() => setMobileOpen(false)} className="text-sm text-gray-700">About</Link>
-            <Link to="/blog" onClick={() => setMobileOpen(false)} className="text-sm text-gray-700">Blog</Link>
-            <Link to="/contact" onClick={() => setMobileOpen(false)} className="text-sm text-gray-700">Contact</Link>
-            <Link to="/faq" onClick={() => setMobileOpen(false)} className="text-sm text-gray-700">FAQ</Link>
-            <Link to="/wishlist" onClick={() => { handleWishlistClick(); setMobileOpen(false); }} className="text-sm text-gray-700">Wishlist</Link>
-            <button onClick={() => { handleCartOpen(); setMobileOpen(false); }} className="text-sm text-gray-700 text-left">View Cart ({items.length})</button>
+          <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-3 text-sm">
+            <Link to="/" onClick={() => setMobileOpen(false)} className="text-gray-700 hover:text-gray-900 py-2">Home</Link>
+            <div className="border-b border-gray-200 pb-3">
+              <ShopDropdown onClose={() => setMobileOpen(false)} />
+            </div>
+            <Link to="/about" onClick={() => setMobileOpen(false)} className="text-gray-700 hover:text-gray-900 py-2">About</Link>
+            <Link to="/blog" onClick={() => setMobileOpen(false)} className="text-gray-700 hover:text-gray-900 py-2">Blog</Link>
+            <Link to="/contact" onClick={() => setMobileOpen(false)} className="text-gray-700 hover:text-gray-900 py-2">Contact</Link>
+            <Link to="/faq" onClick={() => setMobileOpen(false)} className="text-gray-700 hover:text-gray-900 py-2">FAQ</Link>
+            <hr className="my-2 border-gray-200" />
+            <div className="flex gap-3 py-2">
+              <span className="text-xs text-gray-500">Follow</span>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-gray-900" aria-label="Instagram">
+                <FiInstagram size={16} />
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-gray-900" aria-label="Twitter">
+                <FiTwitter size={16} />
+              </a>
+            </div>
           </div>
         </div>
       )}
