@@ -73,14 +73,14 @@ export default function ProductCard({ product, variant = "default", onAddToCart,
       )}
 
       {/* CONTENT */}
-      <div className={isFashion ? "info" : "p-4 space-y-2"}>
+      <div className={isFashion ? "info" : "p-2 sm:p-3 md:p-4 space-y-1.5 sm:space-y-2"}>
 
         {/* TAGS */}
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-0.5 sm:gap-1 md:gap-2 flex-wrap">
           {product.tags?.map((tag) => (
             <span
               key={tag}
-              className="text-[10px] px-2 py-1 rounded-full bg-black text-white uppercase"
+              className="text-[7px] sm:text-[8px] md:text-[10px] px-1 sm:px-1.5 md:px-2 py-0.5 rounded-full bg-black text-white uppercase"
             >
               {tag}
             </span>
@@ -88,7 +88,7 @@ export default function ProductCard({ product, variant = "default", onAddToCart,
         </div>
 
         {/* TITLE */}
-        <h3 className={isFashion ? "text-lg font-serif leading-tight" : "text-[15px] font-medium leading-tight"}>{product.name}</h3>
+        <h3 className={isFashion ? "text-base sm:text-lg font-serif leading-tight" : "text-xs sm:text-sm md:text-[15px] font-medium leading-tight line-clamp-2"}>{product.name}</h3>
 
         {/* RATING */}
         {product.rating && (
@@ -105,18 +105,18 @@ export default function ProductCard({ product, variant = "default", onAddToCart,
         )}
 
         {/* PRICE */}
-        <div className="text-sm text-slate-500">
+        <div className="text-[11px] sm:text-xs md:text-sm text-slate-500 font-semibold">
           ${product.price.toLocaleString()}
-          {product.onSale && <span className="ml-2 text-red-600 font-semibold">SALE</span>}
+          {product.onSale && <span className="ml-1 text-red-600">SALE</span>}
         </div>
 
         {/* COLORS */}
         {product.colors && (
-          <div className="flex gap-2 mt-1">
+          <div className="flex gap-1.5 sm:gap-2 mt-1">
             {product.colors.map((c) => (
               <span
                 key={c}
-                className="w-3 h-3 rounded-full border"
+                className="w-2 sm:w-2.5 md:w-3 h-2 sm:h-2.5 md:h-3 rounded-full border"
                 style={{ backgroundColor: c }}
               ></span>
             ))}
@@ -124,12 +124,12 @@ export default function ProductCard({ product, variant = "default", onAddToCart,
         )}
 
         {/* BUTTONS */}
-        <div className="flex justify-between items-center pt-3">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-1.5 sm:gap-2 pt-2 sm:pt-3">
 
           {/* QUICK VIEW */}
           <button
             onClick={() => onQuickView && onQuickView(product)}
-            className="px-3 py-2 border text-xs rounded-md hover:bg-slate-50 cursor-pointer"
+            className="w-full sm:flex-1 px-1.5 sm:px-2 md:px-3 py-1.5 sm:py-2 border text-[11px] sm:text-xs rounded-md hover:bg-slate-50 cursor-pointer transition"
           >
             Quick View
           </button>
@@ -141,7 +141,7 @@ export default function ProductCard({ product, variant = "default", onAddToCart,
               showToast("Added successfully!");
               onAddToCart && onAddToCart();
             }}
-            className="px-4 py-2 bg-black text-white text-xs rounded-md hover:bg-black/90 transition cursor-pointer"
+            className="w-full sm:flex-1 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-black text-white text-[11px] sm:text-xs rounded-md hover:bg-black/90 transition cursor-pointer"
           >
             Add to Cart
           </button>

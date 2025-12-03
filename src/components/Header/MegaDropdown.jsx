@@ -21,12 +21,19 @@
  * - Modification    : Fixed positioning, added react-icons
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingBag, Star, Shirt, Backpack, Scissors, Diamond, ChevronDown } from "lucide-react";
 
 export default function MegaDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onScroll = () => setIsOpen(false);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isOpen]);
 
   const categories = [
     { name: "All", icon: ShoppingBag },
@@ -74,9 +81,9 @@ export default function MegaDropdown() {
                   <div className="flex justify-center mb-3 transition-transform group-hover/item:scale-110">
                     <IconComponent className="w-8 h-8 text-gray-800" />
                   </div>
-                  <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wide hover:text-gray-600 transition">
-                    {name}
-                  </h3>
+                      <h3 className="text-sm font-semibold text-gray-800 tracking-wide hover:text-gray-600 transition luxury uppercase">
+                        {name.toUpperCase()}
+                      </h3>
                 </Link>
               );
             })}

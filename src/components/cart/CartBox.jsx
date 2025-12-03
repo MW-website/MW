@@ -42,7 +42,7 @@ export default function CartBox() {
             <div className="flex-1">
               <div className="font-medium text-sm">{item.name}</div>
               <div className="text-xs text-gray-500">
-                ₦{item.price.toLocaleString()}
+                ${item.price.toLocaleString()}
               </div>
 
               {/* Qty */}
@@ -84,7 +84,7 @@ export default function CartBox() {
         <>
           <div className="flex justify-between text-sm font-medium">
             <span>Total:</span>
-            <span>₦{total.toLocaleString()}</span>
+            <span>${total.toLocaleString()}</span>
           </div>
 
           <Link

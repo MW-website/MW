@@ -1,3 +1,15 @@
+/**
+    * @description      : 
+    * @author           : fortu
+    * @group            : 
+    * @created          : 03/12/2025 - 13:23:45
+    * 
+    * MODIFICATION LOG
+    * - Version         : 1.0.0
+    * - Date            : 03/12/2025
+    * - Author          : fortu
+    * - Modification    : 
+**/
 // src/pages/Checkout.jsx
 import React from "react";
 import { useCart } from "../context/CartContext";
@@ -59,7 +71,7 @@ export default function Checkout() {
 
             <div className="flex-1">
               <div className="font-medium">{item.name}</div>
-              <div className="text-xs text-gray-500">₦{item.price.toLocaleString()}</div>
+              <div className="text-xs text-gray-500">${item.price.toLocaleString()}</div>
 
               <div className="flex items-center gap-2 mt-1">
                 <button
@@ -95,7 +107,7 @@ export default function Checkout() {
 
         {items.length > 0 && (
           <div className="pt-4 text-right font-medium">
-            Total: ₦{total.toLocaleString()}
+            Total: ${total.toLocaleString()}
           </div>
         )}
       </div>

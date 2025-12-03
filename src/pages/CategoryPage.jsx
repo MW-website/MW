@@ -11,6 +11,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import CategoryDropdown from "../components/shop/CategoryDropdown";
 import ProductCard from "../components/shop/ProductCard";
 import { fetchProductsByCategory } from "../services/productApi";
 
@@ -105,13 +106,32 @@ export default function CategoryPage() {
         
         {/* HEADER */}
         <div className="mb-8 border-b pb-6">
+          {/* Back button hidden on mobile (dropdown used instead) */}
           <button
             onClick={() => navigate(-1)}
-            className="text-sm text-gray-600 hover:text-black mb-4 transition"
+            className="hidden lg:inline-block text-sm text-gray-600 hover:text-black mb-4 transition"
           >
             ← Back
           </button>
-          <h1 className="text-4xl font-serif text-gray-900 mb-2 uppercase">
+
+          {/* Category dropdown for mobile (and small screens) */}
+          <div className="lg:hidden mb-4">
+            {/** categories are a small curated set to navigate between category pages **/}
+            <CategoryDropdown
+              categories={["All", "Dresses", "Bags", "Skirts", "Tops", "Shirts", "Accessories"]}
+              active={categoryName}
+              onSelect={(cat) => {
+                if (!cat) return;
+                if (cat === "All") {
+                  navigate("/shop");
+                } else {
+                  navigate(`/category/${String(cat).toLowerCase()}`);
+                }
+              }}
+            />
+          </div>
+
+          <h1 className="text-4xl luxury text-gray-900 mb-2 uppercase">
             {categoryName}
           </h1>
           <p className="text-gray-600">{sorted.length} products available</p>
