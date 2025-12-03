@@ -3,10 +3,10 @@ import AboutSection from "../components/home/AboutSection";
 
 export default function About() {
   return (
-    <main className="min-h-screen bg-[var(--color-joelle-beige)]">
+    <main className="min-h-screen bg-[var(--color-mw-beige)]">
       <header className="container py-12 text-center">
-        <h1 className="text-4xl font-[var(--font-serif)] mb-2">About Joelle</h1>
-        <p className="text-sm text-[var(--color-joelle-muted)]">A calm, feminine boutique inspired layout</p>
+        <h1 className="text-4xl font-[var(--font-serif)] mb-2">About MW</h1>
+        <p className="text-sm text-[var(--color-mw-muted)]">A calm, feminine boutique inspired layout</p>
       </header>
 
       <AboutSection />

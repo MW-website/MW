@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import { MdTune } from "react-icons/md";
 
-export default function MiniNav({ sort, onSort, category, onClear, productCount = 0 }) {
+export default function MiniNav({ sort, onSort, category, onClear, productCount = 0, minPrice, setMinPrice, maxPrice, setMaxPrice, minRating, setMinRating, saleOnly, setSaleOnly }) {
   const [showFilters, setShowFilters] = useState(false);
   const isFiltered = category !== "All";
 
@@ -21,7 +21,7 @@ export default function MiniNav({ sort, onSort, category, onClear, productCount 
           {isFiltered && (
             <button
               onClick={onClear}
-              className="px-3 py-2 rounded-md bg-black text-white text-xs hover:bg-gray-900 transition"
+              className="px-3 py-2 rounded-md bg-black text-white text-xs hover:bg-gray-900 transition cursor-pointer"
             >
               ⬅ Back
             </button>
@@ -36,7 +36,7 @@ export default function MiniNav({ sort, onSort, category, onClear, productCount 
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="px-3 py-2 rounded-md border bg-white text-xs hover:bg-gray-50 transition flex items-center gap-2"
+            className="px-3 py-2 rounded-md border bg-white text-xs hover:bg-gray-50 transition flex items-center gap-2 cursor-pointer"
           >
             <MdTune size={16} />
             Filters
@@ -56,7 +56,7 @@ export default function MiniNav({ sort, onSort, category, onClear, productCount 
 
           <button
             onClick={handleReset}
-            className="px-3 py-2 rounded-md border bg-white text-xs hover:bg-gray-50 transition"
+            className="px-3 py-2 rounded-md border bg-white text-xs hover:bg-gray-50 transition cursor-pointer"
           >
             Reset All
           </button>
@@ -70,25 +70,25 @@ export default function MiniNav({ sort, onSort, category, onClear, productCount 
             <div>
               <label className="block text-xs font-semibold mb-2">Price Range</label>
               <div className="flex gap-2">
-                <input type="number" placeholder="Min" className="w-full px-2 py-1 border rounded text-xs" />
-                <input type="number" placeholder="Max" className="w-full px-2 py-1 border rounded text-xs" />
+                <input type="number" placeholder="Min" min="0" value={minPrice} onChange={(e) => setMinPrice(Math.max(0, parseFloat(e.target.value) || 0))} className="w-full px-2 py-1 border rounded text-xs" />
+                <input type="number" placeholder="Max" value={maxPrice === Infinity ? "" : maxPrice} onChange={(e) => setMaxPrice(parseFloat(e.target.value) || Infinity)} className="w-full px-2 py-1 border rounded text-xs" />
               </div>
             </div>
 
             <div>
               <label className="block text-xs font-semibold mb-2">Rating</label>
-              <select className="w-full px-2 py-1 border rounded text-xs">
-                <option>Any Rating</option>
-                <option>4+ Stars</option>
-                <option>3+ Stars</option>
-                <option>2+ Stars</option>
+              <select value={minRating} onChange={(e) => setMinRating(parseInt(e.target.value))} className="w-full px-2 py-1 border rounded text-xs cursor-pointer">
+                <option value="0">Any Rating</option>
+                <option value="4">4+ Stars</option>
+                <option value="3">3+ Stars</option>
+                <option value="2">2+ Stars</option>
               </select>
             </div>
 
             <div>
               <label className="block text-xs font-semibold mb-2">On Sale</label>
               <label className="flex items-center gap-2 text-xs cursor-pointer">
-                <input type="checkbox" className="w-4 h-4" />
+                <input type="checkbox" checked={saleOnly} onChange={(e) => setSaleOnly(e.target.checked)} className="w-4 h-4 cursor-pointer" />
                 Sale Items Only
               </label>
             </div>
@@ -103,8 +103,8 @@ export default function MiniNav({ sort, onSort, category, onClear, productCount 
           </div>
 
           <div className="flex gap-2 mt-3">
-            <button className="px-3 py-1 bg-black text-white text-xs rounded hover:bg-gray-900 transition">Apply</button>
-            <button onClick={() => setShowFilters(false)} className="px-3 py-1 border text-xs rounded hover:bg-gray-50 transition">Close</button>
+            <button onClick={() => setShowFilters(false)} className="px-3 py-1 bg-black text-white text-xs rounded hover:bg-gray-900 transition cursor-pointer">Apply</button>
+            <button onClick={() => setShowFilters(false)} className="px-3 py-1 border text-xs rounded hover:bg-gray-50 transition cursor-pointer">Close</button>
           </div>
         </div>
       )}

@@ -16,11 +16,11 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => localStorage.getItem("joelle_theme") || "light");
+  const [theme, setTheme] = useState(() => localStorage.getItem("mw_theme") || "light");
 
   useEffect(() => {
     document.body.setAttribute("data-theme", theme === "dark" ? "dark" : "light");
-    localStorage.setItem("joelle_theme", theme);
+    localStorage.setItem("mw_theme", theme);
   }, [theme]);
 
   function toggle() {

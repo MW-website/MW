@@ -1,3 +1,15 @@
+/**
+    * @description      : 
+    * @author           : fortu
+    * @group            : 
+    * @created          : 02/12/2025 - 22:27:22
+    * 
+    * MODIFICATION LOG
+    * - Version         : 1.0.0
+    * - Date            : 02/12/2025
+    * - Author          : fortu
+    * - Modification    : 
+**/
 import React from "react";
 
 export default function Blog() {
@@ -5,7 +17,7 @@ export default function Blog() {
     <main className="container py-12">
       <header className="text-center mb-8">
         <h1 className="text-3xl font-[var(--font-serif)]">Blog</h1>
-        <p className="text-sm text-[var(--color-joelle-muted)]">Stories, inspiration and style notes</p>
+        <p className="text-sm text-[var(--color-mw-muted)]">Stories, inspiration and style notes</p>
       </header>
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -20,16 +20,16 @@ export default function LatestProducts() {
   const latest = products.slice(0, 3);
 
   return (
-    <section className="bg-[var(--color-joelle-muted)] py-12">
+    <section className="bg-[var(--color-mw-muted)] py-12 gsap-reveal">
       <div className="container">
         <div className="text-center mb-8">
-          <h3 className="text-lg tracking-wide">LATEST PRODUCTS</h3>
+          <h3 className="text-lg tracking-wide">NEW ARRIVALS</h3>
           <div className="h-1 w-0.5 mx-auto my-3 bg-slate-300" style={{height: '18px', width: '1px'}}></div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
           {latest.map((p) => (
-            <article key={p.id} className="bg-white rounded-xl p-4 shadow-[var(--shadow-soft)]">
+            <article key={p.id} className="bg-white rounded-xl p-4 shadow-[var(--shadow-soft)] hover:shadow-lg transition">
               <div className="h-[220px] overflow-hidden rounded-md mb-3">
                 <img src={p.image} alt={p.name} className="w-full h-full object-cover"/>
               </div>

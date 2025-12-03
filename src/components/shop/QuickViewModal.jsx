@@ -14,63 +14,101 @@
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useCart } from "../../context/CartContext";
+import { useToast } from "../../context/ToastContext";
 
 export default function QuickViewModal({ product, onClose }) {
   const { addItem } = useCart();
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    // Disable background scroll
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
 
   useEffect(() => {
     const close = (e) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", close);
     return () => window.removeEventListener("keydown", close);
-  }, []);
+  }, [onClose]);
+
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) onClose();
+  };
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-fadeIn" onClick={handleBackdropClick}>
       
-      <div className="bg-white w-full max-w-2xl rounded-xl shadow-xl overflow-hidden animate-fadeIn">
+      <div className="bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-100 animate-slideUp" onClick={(e) => e.stopPropagation()}>
         
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b">
-          <h2 className="font-semibold text-lg">{product.name}</h2>
-          <button onClick={onClose} className="text-xl">×</button>
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+          <h2 className="font-semibold text-xl text-gray-900">{product.name}</h2>
+          <button onClick={onClose} className="text-2xl text-gray-500 hover:text-gray-700 transition cursor-pointer">×</button>
         </div>
 
         {/* Content */}
-        <div className="flex flex-col md:flex-row gap-6 p-4">
+        <div className="flex flex-col md:flex-row gap-8 p-6">
           
           {/* Image */}
           <div className="flex-1">
             <img
               src={product.image}
               alt={product.name}
-              className="rounded-md w-full object-cover"
+              className="rounded-lg w-full h-auto object-cover shadow-md"
             />
           </div>
 
           {/* Info */}
-          <div className="flex-1 space-y-4">
-            <p className="text-gray-600">{product.short}</p>
-
-            <div className="text-lg font-semibold">
-              ₦{product.price.toLocaleString()}
+          <div className="flex-1 space-y-6">
+            <div>
+              <p className="text-sm text-gray-500 uppercase tracking-wide mb-2">Product Details</p>
+              <p className="text-gray-700 leading-relaxed">{product.short}</p>
             </div>
 
-            <div className="flex gap-3">
-              {product.colors.map((c, i) => (
-                <div
-                  key={i}
-                  className="w-6 h-6 rounded-full border"
-                  style={{ backgroundColor: c }}
-                ></div>
-              ))}
+            <div className="border-t pt-4">
+              <p className="text-3xl font-bold text-gray-900">
+                ${product.price.toLocaleString()}
+              </p>
+              {product.onSale && <p className="text-red-600 font-semibold text-sm mt-1">ON SALE</p>}
+            </div>
+
+            {product.rating && (
+              <div className="flex items-center gap-2">
+                <div className="flex text-yellow-400">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className={i < Math.round(product.rating) ? "text-yellow-400" : "text-gray-300"}>
+                      ★
+                    </span>
+                  ))}
+                </div>
+                <span className="text-sm text-gray-600">({product.reviews || 0} reviews)</span>
+              </div>
+            )}
+
+            <div>
+              <p className="text-xs font-semibold text-gray-600 uppercase mb-3">Colors</p>
+              <div className="flex gap-3">
+                {product.colors.map((c, i) => (
+                  <div
+                    key={i}
+                    className="w-7 h-7 rounded-full border-2 border-gray-300 hover:border-gray-800 transition cursor-pointer"
+                    style={{ backgroundColor: c }}
+                    title={c}
+                  ></div>
+                ))}
+              </div>
             </div>
 
             <button
               onClick={() => {
                 addItem(product, 1);
+                showToast("Added successfully!");
                 onClose();
               }}
-              className="px-4 py-2 bg-black text-white rounded-md"
+              className="w-full px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-900 transition cursor-pointer font-semibold text-sm uppercase tracking-wide"
             >
               Add to Cart
             </button>

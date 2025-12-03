@@ -15,12 +15,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useWishlist } from "../../context/WishlistContext";
+import { useToast } from "../../context/ToastContext";
 
 export default function ProductCard({ product, variant = "default", onAddToCart, onQuickView }) {
   if (!product) return null;
 
   const { addItem } = useCart();
   const { wish, toggle } = useWishlist();
+  const { showToast } = useToast();
 
   // is this product wishlisted?
   const isWish = wish.includes(product.id);
@@ -127,7 +129,7 @@ export default function ProductCard({ product, variant = "default", onAddToCart,
           {/* QUICK VIEW */}
           <button
             onClick={() => onQuickView && onQuickView(product)}
-            className="px-3 py-2 border text-xs rounded-md hover:bg-slate-50"
+            className="px-3 py-2 border text-xs rounded-md hover:bg-slate-50 cursor-pointer"
           >
             Quick View
           </button>
@@ -136,9 +138,10 @@ export default function ProductCard({ product, variant = "default", onAddToCart,
           <button
             onClick={() => {
               addItem(product, 1);
+              showToast("Added successfully!");
               onAddToCart && onAddToCart();
             }}
-            className="px-4 py-2 bg-black text-white text-xs rounded-md hover:bg-black/90 transition cursor-default"
+            className="px-4 py-2 bg-black text-white text-xs rounded-md hover:bg-black/90 transition cursor-pointer"
           >
             Add to Cart
           </button>

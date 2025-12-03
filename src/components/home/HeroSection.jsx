@@ -58,13 +58,13 @@ export default function HeroSection() {
               uppercase text-gray-800 mb-6
             "
           >
-            To Joelle Theme Site
+            To MW Store
           </h3>
 
           <div className="w-10 h-[2px] bg-gray-400 mb-8"></div>
 
           <p className="text-gray-600 leading-relaxed mb-8 max-w-lg">
-            Joelle is a fully responsive, premium theme — perfect for female
+            MW is a fully responsive, premium fashion store — perfect for women
             entrepreneurs, coaches, business strategists, virtual assistants,
             social media managers, and more.
           </p>

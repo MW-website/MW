@@ -11,7 +11,7 @@
     * - Modification    : 
 **/
 /**
- * Single Product Page — Joelle Boutique
+ * Single Product Page — MW Store
  */
 
 import React, { useState, useMemo } from "react";

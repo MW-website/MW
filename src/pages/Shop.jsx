@@ -1,4 +1,16 @@
 /**
+    * @description      : 
+    * @author           : fortu
+    * @group            : 
+    * @created          : 03/12/2025 - 00:57:16
+    * 
+    * MODIFICATION LOG
+    * - Version         : 1.0.0
+    * - Date            : 03/12/2025
+    * - Author          : fortu
+    * - Modification    : 
+**/
+/**
  * @description      : Shop page with API integration
  * @author           : fortu
  * @created          : 01/12/2025
@@ -28,12 +40,25 @@ export default function Shop() {
   const [showToast, setShowToast] = useState(false);
   const [priceFilter, setPriceFilter] = useState(searchParams.get("price") || null);
   const [quickProduct, setQuickProduct] = useState(null);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(Infinity);
+  const [minRating, setMinRating] = useState(0);
+  const [saleOnly, setSaleOnly] = useState(false);
 
   // sync query params to local state when the URL changes
   useEffect(() => {
     const cat = searchParams.get("category") || "All";
     setCategory(cat);
     setPriceFilter(searchParams.get("price") || null);
+    // sync quick filters into UI state
+    const qFilter = searchParams.get("filter");
+    const qPrice = searchParams.get("price");
+    setSaleOnly(qFilter === "onsale");
+    if (qPrice === "under-2000") {
+      setMaxPrice(2000);
+    } else {
+      setMaxPrice(Infinity);
+    }
   }, [searchParams]);
 
   // Fetch products from API on mount
@@ -55,9 +80,12 @@ export default function Shop() {
     loadProducts();
   }, []);
 
-  // Derive distinct categories
+  // Derive distinct categories (ensure key categories are always present)
   const categories = useMemo(() => {
-    return ["All", ...new Set(products.map((p) => p.category))];
+    const productCategories = new Set(products.map((p) => p.category));
+    const keyCategories = ["Dresses", "Bags", "Skirts", "Tops", "Shirts", "Accessories"];
+    const allCategories = new Set([...productCategories, ...keyCategories]);
+    return ["All", ...Array.from(allCategories).sort()];
   }, [products]);
 
   // Filtering + Sorting
@@ -77,6 +105,15 @@ export default function Shop() {
     }
     if (qPrice === "under-2000") {
       data = data.filter((p) => p.price < 2000);
+    }
+
+    // apply user filters
+    data = data.filter((p) => p.price >= minPrice && p.price <= maxPrice);
+    if (minRating > 0) {
+      data = data.filter((p) => (p.rating || 0) >= minRating);
+    }
+    if (saleOnly) {
+      data = data.filter((p) => p.onSale);
     }
 
     switch (sort) {
@@ -101,7 +138,7 @@ export default function Shop() {
     }
 
     return data;
-  }, [category, sort, products]);
+  }, [category, sort, products, minPrice, maxPrice, minRating, saleOnly, searchParams]);
 
   if (loading) {
     return (
@@ -140,12 +177,13 @@ export default function Shop() {
               <h2 className="title">Discover Timeless Fashion</h2>
               <p className="subtitle mt-4">A curated edit of beautiful pieces — effortless silhouettes, soft neutrals and modern classics. Shop our full collection and find staples that last.</p>
               <div className="mt-6 flex gap-3">
-                <button onClick={() => setCategory("Dresses")} className="btn-shop-ghost">Explore Dresses</button>
-                <button onClick={() => setCategory("Bags")} className="px-4 py-2 bg-black text-white rounded-md">Explore Bags</button>
+                <button onClick={() => setCategory("Dresses")} className="btn-shop-ghost cursor-pointer">Explore Dresses</button>
+                <button onClick={() => setCategory("Tops")} className="px-4 py-2 bg-black text-white rounded-md cursor-pointer">Explore Tops</button>
+                <button onClick={() => setCategory("Bags")} className="px-4 py-2 bg-white text-black border border-black rounded-md cursor-pointer">Explore Bags</button>
               </div>
             </div>
             <div className="hidden md:block md:w-1/3">
-              <img src="/images/hero-fashion.jpg" alt="fashion hero" className="w-full h-[260px] object-cover rounded-md shadow-[var(--shadow-soft)]" />
+              <img src="https://thelimitedclothes.com/wp-content/uploads/2024/06/The-Limited-7.webp" alt="fashion hero" className="w-full h-[260px] object-cover rounded-md shadow-[var(--shadow-soft)]" />
             </div>
           </div>
         </section>
@@ -171,6 +209,14 @@ export default function Shop() {
             category={category}
             onClear={() => setCategory("All")}
             productCount={filtered.length}
+            minPrice={minPrice}
+            setMinPrice={setMinPrice}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+            minRating={minRating}
+            setMinRating={setMinRating}
+            saleOnly={saleOnly}
+            setSaleOnly={setSaleOnly}
           />
 
           {/* PRODUCT GRID */}

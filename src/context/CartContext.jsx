@@ -18,30 +18,33 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
   const [items, setItems] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem("joelle_cart_v1")) || [];
+      return JSON.parse(localStorage.getItem("mw_cart_v1")) || [];
     } catch {
       return [];
     }
   });
 
+  const [showBadge, setShowBadge] = useState(false);
+
   useEffect(() => {
-    localStorage.setItem("joelle_cart_v1", JSON.stringify(items));
+    localStorage.setItem("mw_cart_v1", JSON.stringify(items));
   }, [items]);
 
   function addItem(product, qty = 1) {
     setItems((prev) => {
       const existing = prev.find((i) => i.id === product.id);
-      if (existing) {
-        return prev.map((i) =>
-          i.id === product.id ? { ...i, quantity: i.quantity + qty } : i
-        );
-      }
-      return [...prev, { ...product, quantity: qty }];
+      const newItems = existing
+        ? prev.map((i) => (i.id === product.id ? { ...i, quantity: i.quantity + qty } : i))
+        : [...prev, { ...product, quantity: qty }];
+      // Show badge when an item is added
+      setShowBadge(true);
+      return newItems;
     });
   }
 
   function removeItem(productId) {
     setItems((prev) => prev.filter((i) => i.id !== productId));
+    // Don't show badge when removing items
   }
 
   function updateQuantity(productId, quantity) {
@@ -54,10 +57,15 @@ export function CartProvider({ children }) {
     setItems([]);
   }
 
+  function hideBadge() {
+    // Hide the badge (called when cart modal is opened)
+    setShowBadge(false);
+  }
+
   const total = items.reduce((s, i) => s + (i.price || 0) * (i.quantity || 0), 0);
 
   return (
-    <CartContext.Provider value={{ items, addItem, removeItem, updateQuantity, clearCart, total }}>
+    <CartContext.Provider value={{ items, addItem, removeItem, updateQuantity, clearCart, hideBadge, showBadge, total }}>
       {children}
     </CartContext.Provider>
   );

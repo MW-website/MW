@@ -1,78 +1,98 @@
-/**
-    * @description      : 
-    * @author           : fortu
-    * @group            : 
-    * @created          : 01/12/2025 - 16:47:05
-    * 
-    * MODIFICATION LOG
-    * - Version         : 1.0.0
-    * - Date            : 01/12/2025
-    * - Author          : fortu
-    * - Modification    : 
-**/
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FiSearch } from "react-icons/fi";
+import { FiSearch, FiHeart } from "react-icons/fi";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import MegaDropdown from "./MegaDropdown";
 import CartBottomSheet from "../cart/CartBottomSheet";
 import { useCart } from "../../context/CartContext";
+import { useWishlist } from "../../context/WishlistContext";
 
 export default function Header() {
   const [cartOpen, setCartOpen] = useState(false);
-  const { items } = useCart();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const { items, hideBadge: hideCartBadge, showBadge: showCartBadge } = useCart();
+  const { wish, hideBadge: hideWishBadge, showBadge: showWishBadge } = useWishlist();
+
+  const handleCartOpen = () => {
+    setCartOpen(true);
+    hideCartBadge();
+  };
+
+  const handleWishlistClick = () => {
+    hideWishBadge();
+  };
 
   return (
-    <header
-      className="
-        fixed top-0 left-0 w-full z-50
-        bg-transparent/90 
-      "
-    >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <header className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-sm border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
 
-        {/* LEFT SOCIAL ICONS */}
-        <div className="flex items-center gap-4 text-gray-700 text-sm">
-          <a href="#" className="hover:text-black transition">f</a>
-          <a href="#" className="hover:text-black transition">ig</a>
-          <a href="#" className="hover:text-black transition">p</a>
+        {/* LEFT */}
+        <div className="flex items-center gap-3 text-gray-600 text-sm">
+          <a href="#" className="hover:text-gray-900 transition hidden md:inline">Follow</a>
+          <a href="#" className="hover:text-gray-900 transition hidden md:inline">Support</a>
         </div>
 
         {/* CENTER LOGO */}
         <div className="absolute left-1/2 -translate-x-1/2">
-          <Link to="/shop" className="text-xl font-serif tracking-wide hover:text-black transition">
-            MW <span className="font-light italic">Store</span>
+          <Link to="/shop" className="text-2xl font-serif tracking-tight text-gray-900 hover:opacity-90 transition">
+            MW <span className="font-light italic text-gray-700">Store</span>
           </Link>
         </div>
 
-        {/* RIGHT NAVIGATION */}
-        <nav className="flex items-center gap-6 uppercase text-xs tracking-wide text-gray-700">
-          <Link to="/" className="hover:text-black transition">Home</Link>
-          <Link to="/about" className="hover:text-black transition">About</Link>
-          <Link to="/blog" className="hover:text-black transition">Blog</Link>
-          <Link to="/contact" className="hover:text-black transition">Contact</Link>
-          <Link to="/faq" className="hover:text-black transition">FAQ</Link>
+        {/* RIGHT NAV */}
+        <nav className="hidden md:flex items-center gap-6 text-sm text-gray-700">
+          <Link to="/" className="hover:text-gray-900 transition">Home</Link>
+          <Link to="/about" className="hover:text-gray-900 transition">About</Link>
+          <Link to="/blog" className="hover:text-gray-900 transition">Blog</Link>
+          <Link to="/contact" className="hover:text-gray-900 transition">Contact</Link>
+          <Link to="/faq" className="hover:text-gray-900 transition">FAQ</Link>
 
-          {/* MEGA DROPDOWN SHOP */}
           <MegaDropdown />
 
-          {/* ICONS */}
-          <Link to="/search" className="ml-4 hover:text-black transition hidden">
-            <FiSearch size={18} />
+          <Link to="/wishlist" onClick={handleWishlistClick} className="relative hover:text-gray-900 transition" aria-label={`Wishlist (${wish.length} items)`}>
+            <FiHeart size={18} />
+            {showWishBadge && wish.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-pink-500 rounded-full w-3 h-3" aria-hidden="true" />
+            )}
           </Link>
 
-          <button onClick={() => setCartOpen(true)} className="relative hover:text-black transition" aria-label="Checkout">
+          <button onClick={handleCartOpen} className="relative hover:text-gray-900 transition" aria-label="Checkout">
             <HiOutlineShoppingBag size={20} />
-            {items.length > 0 && (
+            {showCartBadge && items.length > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">
                 {items.length}
               </span>
             )}
           </button>
         </nav>
+
+        {/* Mobile hamburger */}
+        <div className="md:hidden">
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 rounded-md border border-gray-200 bg-white/60">
+            <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
       </div>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="md:hidden bg-white border-t border-gray-100 shadow-sm">
+          <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-3">
+            <Link to="/" onClick={() => setMobileOpen(false)} className="text-sm text-gray-700">Home</Link>
+            <Link to="/about" onClick={() => setMobileOpen(false)} className="text-sm text-gray-700">About</Link>
+            <Link to="/blog" onClick={() => setMobileOpen(false)} className="text-sm text-gray-700">Blog</Link>
+            <Link to="/contact" onClick={() => setMobileOpen(false)} className="text-sm text-gray-700">Contact</Link>
+            <Link to="/faq" onClick={() => setMobileOpen(false)} className="text-sm text-gray-700">FAQ</Link>
+            <Link to="/wishlist" onClick={() => { handleWishlistClick(); setMobileOpen(false); }} className="text-sm text-gray-700">Wishlist</Link>
+            <button onClick={() => { handleCartOpen(); setMobileOpen(false); }} className="text-sm text-gray-700 text-left">View Cart ({items.length})</button>
+          </div>
+        </div>
+      )}
 
       <CartBottomSheet open={cartOpen} onClose={() => setCartOpen(false)} />
     </header>
   );
 }
+

@@ -1,4 +1,16 @@
 /**
+    * @description      : 
+    * @author           : fortu
+    * @group            : 
+    * @created          : 02/12/2025 - 22:36:56
+    * 
+    * MODIFICATION LOG
+    * - Version         : 1.0.0
+    * - Date            : 02/12/2025
+    * - Author          : fortu
+    * - Modification    : 
+**/
+/**
  * @description      : Mega dropdown menu for Shop category navigation
  * @author           : fortu
  * @created          : 02/12/2025
@@ -11,20 +23,19 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { MdOutlineShoppingBag, MdOutlineCheckroom, MdOutlineStar } from "react-icons/md";
-import { GiSkirt, GiDiamondRing } from "react-icons/gi";
+import { ShoppingBag, Star, Shirt, Backpack, Scissors, Diamond, ChevronDown } from "lucide-react";
 
 export default function MegaDropdown() {
   const [isOpen, setIsOpen] = useState(false);
 
   const categories = [
-    { name: "All", icon: MdOutlineShoppingBag },
-    { name: "Dresses", icon: MdOutlineStar },
-    { name: "Tops", icon: MdOutlineCheckroom },
-    { name: "Bags", icon: MdOutlineShoppingBag },
-    { name: "Skirts", icon: GiSkirt },
-    { name: "Shirts", icon: MdOutlineCheckroom },
-    { name: "Accessories", icon: GiDiamondRing },
+    { name: "All", icon: ShoppingBag },
+    { name: "Dresses", icon: Star },
+    { name: "Tops", icon: Shirt },
+    { name: "Bags", icon: Backpack },
+    { name: "Skirts", icon: Scissors },
+    { name: "Shirts", icon: Shirt },
+    { name: "Accessories", icon: Diamond },
   ];
 
   return (
@@ -35,15 +46,13 @@ export default function MegaDropdown() {
     >
       <button className="hover:text-black transition uppercase text-xs tracking-wide text-gray-700 flex items-center gap-1">
         Shop
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
+        <ChevronDown className="w-4 h-4" />
       </button>
 
       {/* MEGA DROPDOWN MENU */}
       <div
         className={`
-          absolute top-full -left-32
+          absolute top-full -left-[28rem]
           w-[600px]
           bg-white shadow-xl
           rounded-lg border border-gray-200
@@ -53,22 +62,25 @@ export default function MegaDropdown() {
           z-40
         `}
       >
-        <div className="grid grid-cols-3 gap-6 p-8">
-          {categories.map((cat) => {
-            const IconComponent = cat.icon;
-            const name = cat.name;
-            const to = name === 'All' ? '/shop' : `/shop?category=${name.toLowerCase()}`;
-            return (
-              <Link key={name} to={to} className="text-center group/item">
-                <div className="flex justify-center mb-3 transition-transform group-hover/item:scale-110">
-                  <IconComponent className="w-8 h-8 text-gray-800" />
-                </div>
-                <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wide hover:text-gray-600 transition">
-                  {name}
-                </h3>
-              </Link>
-            );
-          })}
+        <div className="p-8">
+          <p className="text-xs text-gray-600 uppercase tracking-wide font-semibold mb-6">Categories</p>
+          <div className="grid grid-cols-3 gap-6">
+            {categories.map((cat) => {
+              const IconComponent = cat.icon;
+              const name = cat.name;
+              const to = name === 'All' ? '/shop' : `/shop?category=${name.toLowerCase()}`;
+              return (
+                <Link key={name} to={to} className="text-center group/item">
+                  <div className="flex justify-center mb-3 transition-transform group-hover/item:scale-110">
+                    <IconComponent className="w-8 h-8 text-gray-800" />
+                  </div>
+                  <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wide hover:text-gray-600 transition">
+                    {name}
+                  </h3>
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
         {/* FEATURED SECTION + QUICK FILTERS */}

@@ -1,13 +1,26 @@
 /**
+    * @description      : 
+    * @author           : fortu
+    * @group            : 
+    * @created          : 02/12/2025 - 22:16:29
+    * 
+    * MODIFICATION LOG
+    * - Version         : 1.0.0
+    * - Date            : 02/12/2025
+    * - Author          : fortu
+    * - Modification    : 
+**/
+/**
  * Bottom-sheet cart that slides up from the bottom.
  */
 import React from "react";
+import { createPortal } from "react-dom";
 import { useCart } from "../../context/CartContext";
 
 export default function CartBottomSheet({ open, onClose }) {
   const { items, updateQuantity, removeItem, clearCart, total } = useCart();
 
-  return (
+  const sheet = (
     <div
       className={`fixed left-0 right-0 bottom-0 z-50 transition-transform duration-300 ${open ? "translate-y-0" : "translate-y-full"}`}
       aria-hidden={!open}
@@ -56,4 +69,7 @@ export default function CartBottomSheet({ open, onClose }) {
       </div>
     </div>
   );
+
+  if (typeof document === "undefined") return null;
+  return createPortal(sheet, document.body);
 }
