@@ -12,16 +12,25 @@
 **/
 // src/pages/Home.jsx
 import React from "react";
-import Hero from "../components/home/Hero";
-import AboutSection from "../components/home/AboutSection";
-import LatestProducts from "../components/home/LatestProducts";
+import useGsapReveal from "../hooks/useGsapReveal";
+import AppleHero from "../components/home/AppleHero";
+import Showcase from "../components/home/Showcase";
+import Collections from "../components/home/Collections";
+import Features from "../components/home/Features";
+import Newsletter from "../components/home/Newsletter";
+import Footer from "../components/home/Footer";
 
 export default function Home() {
+  useGsapReveal(".gsap-reveal");
+
   return (
-    <div className="min-h-screen bg-[var(--color-joelle-beige)]">
-      <Hero />
-      <AboutSection />
-      <LatestProducts />
-    </div>
+    <main className="min-h-screen bg-[var(--color-mw-beige)] text-gray-800">
+      <AppleHero />
+      <Showcase />
+      <Collections />
+      <Features />
+      <Newsletter />
+      <Footer />
+    </main>
   );
 }

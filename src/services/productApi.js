@@ -1,80 +1,117 @@
 /**
- * @description      : API service for fetching product data
- * @author           : fortu
- * @created          : 02/12/2025
- * 
- * MODIFICATION LOG
- * - Version         : 1.0.0
- * - Date            : 02/12/2025
- * - Modification    : Fetches from Fake Store API
+    * @description      : 
+    * @author           : fortu
+    * @group            : 
+    * @created          : 03/12/2025 - 01:47:22
+    * 
+    * MODIFICATION LOG
+    * - Version         : 1.0.0
+    * - Date            : 03/12/2025
+    * - Author          : fortu
+    * - Modification    : 
+**/
+/**
+ * Product API service (DummyJSON Edition)
+ * Clean. Predictable. Fashion-focused mapping.
  */
 
-// Use DummyJSON as the data source for demo purposes
-const API_ALL = "https://dummyjson.com/products?limit=100";
+const BASE = "https://dummyjson.com/products";
 
-function detectCategoryFromTitle(title) {
-  const t = title.toLowerCase();
-  if (t.includes("dress")) return "Dresses";
-  if (t.includes("skirt")) return "Skirts";
-  if (t.includes("shirt") || t.includes("tee") || t.includes("top")) return "Tops";
-  if (t.includes("bag") || t.includes("purse") || t.includes("backpack")) return "Bags";
-  if (t.includes("ring") || t.includes("necklace") || t.includes("watch")) return "Accessories";
-  if (t.includes("shirt")) return "Shirts";
-  return "Accessories";
-}
+/* ------------------------------------------ */
+/* CATEGORY MAPPING FOR YOUR FASHION WEBSITE  */
+/* ------------------------------------------ */
+const CATEGORY_MAP = {
+  "womens-dresses": "Dresses",
+  "womens-shoes": "Accessories",
+  "womens-bags": "Bags",
+  "womens-jewellery": "Accessories",
+  "tops": "Tops",
+  "mens-shirts": "Shirts",
+  "mens-shoes": "Accessories",
+  "sunglasses": "Accessories",
+  "skincare": "Accessories",
+  "fragrances": "Accessories",
+};
 
-function transformProduct(apiProduct) {
+/* ------------------------------------------ */
+/* NORMALIZER — Build clean product object    */
+/* ------------------------------------------ */
+function normalizeProduct(p) {
+  const apiCategory = p.category?.toLowerCase() || "";
+
   return {
-    id: apiProduct.id,
-    name: apiProduct.title,
-    slug: apiProduct.title.toLowerCase().replace(/\s+/g, "-"),
-    category: detectCategoryFromTitle(apiProduct.title),
-    price: Math.round(apiProduct.price * 100) / 100,
-    image: Array.isArray(apiProduct.images) && apiProduct.images[0] ? apiProduct.images[0] : apiProduct.thumbnail || "",
-    short: (apiProduct.description || "").substring(0, 120) + "...",
-    description: apiProduct.description || "",
-    tags: [detectCategoryFromTitle(apiProduct.title)],
+    id: p.id,
+    name: p.title,
+    slug: p.title.toLowerCase().replace(/\s+/g, "-"),
+    category: CATEGORY_MAP[apiCategory] || apiCategory,
+    price: p.price,
+    image: p.thumbnail || (p.images?.[0] ?? ""),
+    short: p.description.substring(0, 120) + "...",
+    description: p.description,
+    tags: [CATEGORY_MAP[apiCategory] || apiCategory],
     colors: ["#D6C7B3", "#000000"],
-    rating: apiProduct.rating || 4.2,
-    reviews: apiProduct.stock || 0,
+    rating: p.rating,
+    reviews: p.stock,
     onSale: Math.random() > 0.75,
   };
 }
 
-let cachedProducts = null;
-
+/* ------------------------------------------ */
+/* FETCH ALL PRODUCTS                         */
+/* ------------------------------------------ */
 export async function fetchAllProducts() {
   try {
-    if (cachedProducts) return cachedProducts;
-    const res = await fetch(API_ALL);
-    if (!res.ok) throw new Error("Failed to fetch products");
+    const res = await fetch(`${BASE}?limit=100`);
     const data = await res.json();
-    const products = (data.products || []).map(transformProduct);
-    cachedProducts = products;
-    return products;
+    return data.products.map(normalizeProduct);
   } catch (err) {
-    console.error(err);
+    console.error("fetchAllProducts failed:", err);
     return [];
   }
 }
 
+/* ------------------------------------------ */
+/* FETCH BY CATEGORY                          */
+/* ------------------------------------------ */
 export async function fetchProductsByCategory(category) {
-  const all = await fetchAllProducts();
-  return all.filter((p) => p.category === category).slice(0, 50);
+  try {
+    const res = await fetch(`${BASE}/category/${category}`);
+    const data = await res.json();
+    return data.products.map(normalizeProduct);
+  } catch (err) {
+    console.error("fetchProductsByCategory failed:", err);
+    return [];
+  }
 }
 
+/* ------------------------------------------ */
+/* FETCH SINGLE PRODUCT                       */
+/* ------------------------------------------ */
 export async function fetchProductById(id) {
   try {
-    const all = await fetchAllProducts();
-    const found = all.find((p) => String(p.id) === String(id));
-    return found || null;
+    const res = await fetch(`${BASE}/${id}`);
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    return normalizeProduct(data);
   } catch (err) {
-    console.error(err);
+    console.error("fetchProductById failed:", err);
     return null;
   }
 }
 
+/* ------------------------------------------ */
+/* SEARCH PRODUCTS                            */
+/* ------------------------------------------ */
 export async function searchProducts(query) {
-  const all = await fetchAllProducts();
-  return all.filter((p) => p.name.toLowerCase().includes(query.toLowerCase()) || p.description.toLowerCase().includes(query.toLowerCase())).slice(0, 50);
+  if (!query.trim()) return [];
+
+  try {
+    const res = await fetch(`${BASE}/search?q=${query}`);
+    const data = await res.json();
+    return data.products.map(normalizeProduct);
+  } catch (err) {
+    console.error("searchProducts failed:", err);
+    return [];
+  }
 }

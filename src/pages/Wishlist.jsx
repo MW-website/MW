@@ -11,22 +11,41 @@
     * - Modification    : 
 **/
 /**
- * Wishlist Page — Joelle Boutique
+ * Wishlist Page — MW Store
  * Clean grid, quick-view, remove, add-to-cart
  */
 
 import React from "react";
 import { useWishlist } from "../context/WishlistContext";
 import { useCart } from "../context/CartContext";
-import products from "../data/products";
+import { useToast } from "../context/ToastContext";
 import QuickViewModal from "../components/shop/QuickViewModal";
+import { fetchAllProducts } from "../services/productApi";
 
 export default function WishlistPage() {
-  const { wish, remove } = useWishlist();
+  const { wish, remove, hideBadge } = useWishlist();
   const { add } = useCart();
+  const { showToast } = useToast();
   const [quickViewId, setQuickViewId] = React.useState(null);
 
-  const items = products.filter((p) => wish.includes(p.id));
+  const [items, setItems] = React.useState([]);
+
+  React.useEffect(() => {
+    // Hide the badge notification when the wishlist page is opened
+    hideBadge();
+  }, [hideBadge]);
+
+  React.useEffect(() => {
+    let mounted = true;
+    async function load() {
+      const all = await fetchAllProducts();
+      if (!mounted) return;
+      const filtered = all.filter((p) => wish.includes(p.id));
+      setItems(filtered);
+    }
+    load();
+    return () => (mounted = false);
+  }, [wish]);
 
   return (
     <main className="container py-12">
@@ -35,7 +54,7 @@ export default function WishlistPage() {
 
       {/* Empty */}
       {items.length === 0 && (
-        <div className="py-24 text-center text-[color-mix(in srgb,var(--color-joelle-muted) 40%,black)]">
+        <div className="py-24 text-center text-[color-mix(in srgb,var(--color-mw-muted) 40%,black)]">
           <p className="text-lg">Your wishlist is empty.</p>
           <a
             href="/shop"
@@ -73,14 +92,14 @@ export default function WishlistPage() {
               {/* Actions */}
               <div className="flex items-center gap-2 mt-3">
                 <button
-                  className="flex-1 px-3 py-2 text-xs bg-black text-white rounded-md"
-                  onClick={() => add(p.id)}
+                  className="flex-1 px-3 py-2 text-xs bg-black text-white rounded-md hover:bg-gray-900 transition cursor-pointer"
+                  onClick={() => { add(p, 1); showToast("Added successfully!"); }}
                 >
                   Add to Cart
                 </button>
 
                 <button
-                  className="px-2 py-2 text-xs rounded-md border border-slate-300"
+                  className="px-2 py-2 text-xs rounded-md border border-slate-300 hover:bg-slate-100 transition cursor-pointer"
                   onClick={() => remove(p.id)}
                 >
                   ✕
@@ -99,8 +118,11 @@ export default function WishlistPage() {
         ))}
       </div>
 
-      {quickViewId && (
-        <QuickViewModal id={quickViewId} onClose={() => setQuickViewId(null)} />
+      {quickViewId && items.length > 0 && (
+        <QuickViewModal 
+          product={items.find((p) => p.id === quickViewId)} 
+          onClose={() => setQuickViewId(null)} 
+        />
       )}
     </main>
   );

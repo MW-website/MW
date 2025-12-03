@@ -5,7 +5,7 @@ export default function Contact() {
     <main className="container py-12">
       <header className="text-center mb-8">
         <h1 className="text-3xl font-[var(--font-serif)]">Contact</h1>
-        <p className="text-sm text-[var(--color-joelle-muted)]">Say hello — we&apos;d love to hear from you</p>
+        <p className="text-sm text-[var(--color-mw-muted)]">Say hello — we&apos;d love to hear from you</p>
       </header>
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8">

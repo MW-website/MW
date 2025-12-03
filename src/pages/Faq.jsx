@@ -5,7 +5,7 @@ export default function FAQ() {
     <main className="container py-12">
       <header className="text-center mb-8">
         <h1 className="text-3xl font-[var(--font-serif)]">FAQ</h1>
-        <p className="text-sm text-[var(--color-joelle-muted)]">Common questions answered</p>
+        <p className="text-sm text-[var(--color-mw-muted)]">Common questions answered</p>
       </header>
 
       <section className="space-y-4">
