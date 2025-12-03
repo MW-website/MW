@@ -1,0 +1,25 @@
+{
+  "boss": true,
+  "curly": false,
+  "eqeqeq": true,
+  "eqnull": true,
+  "esversion": 11,
+  "immed": true,
+  "latedef": false,
+  "newcap": true,
+  "noarg": true,
+  "node": true,
+  "nonbsp": true,
+  "nonew": true,
+  "plusplus": false,
+  "strict": false,
+  "undef": true,
+  "unused": true,
+  "laxcomma": true,
+  "laxbreak": true,
+  "globalstrict": true,
+  "globals": {
+    "React": true,
+    "ReactDOM": true
+  }
+}
