@@ -1,0 +1,143 @@
+/* src/styles/globals.css */
+@import "tailwindcss";
+
+/* Theme variables */
+:root{
+  --color-mw-beige: #F4EDE7;
+  --color-mw-muted: #DCC7B5;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui;
+  --mini-footer-height: 56px;
+  --shadow-soft: 0 10px 30px rgba(14,12,11,0.06);
+  --muted: #6b7280;
+}
+
+/* Body & layout tokens */
+body{
+  background: var(--color-mw-beige);
+  font-family: var(--font-sans);
+  color: #0f1724;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Utility containers */
+.container {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+.section { padding-block: 4.5rem; }
+
+/* Glass card used across UI */
+.glass-card {
+  background: rgba(255,255,255,0.75);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: var(--shadow-soft);
+  border-radius: 12px;
+}
+
+/* Fashion shop hero */
+.shop-hero {
+  background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(244,237,231,0.9));
+  padding: 4rem 0;
+}
+
+.shop-hero .title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 5vw, 3.2rem);
+  line-height: 1.05;
+  color: #1f2937;
+}
+
+.shop-hero .subtitle {
+  color: var(--muted);
+  max-width: 60ch;
+  margin-top: 0.5rem;
+}
+
+/* Fashion product card modifier */
+.product-fashion {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(15,23,36,0.08);
+}
+
+.product-fashion .image-wrap {
+  height: clamp(200px, 50vw, 360px);
+  overflow: hidden;
+}
+
+.product-fashion img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .35s ease;
+}
+
+.product-fashion:hover img {
+  transform: scale(1.06);
+}
+
+.product-fashion .info {
+  padding: clamp(0.5rem, 2vw, 1.5rem) clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.btn-shop-ghost {
+  background: transparent;
+  border: 1px solid rgba(15,23,36,0.08);
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  color: #0f1724;
+}
+
+/* Small helpers for text */
+.hint { color: var(--muted); font-size: 0.95rem; }
+
+/* Luxury serif helper — use this class to apply the site serif/font for headings */
+.luxury { font-family: var(--font-serif) !important; }
+
+/* Mini footer fixed helper */
+.mini-footer-spacer { height: var(--mini-footer-height); }
+.mini-footer-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--mini-footer-height);
+  z-index: 50;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+/* Responsive tweaks */
+@media (max-width: 980px) {
+  .container { padding-inline: 0.75rem; }
+  .shop-hero .title { font-size: clamp(1.5rem, 4vw, 2.5rem); }
+}
+
+@media (max-width: 640px) {
+  .container { padding-inline: 0.5rem; }
+  .product-fashion .image-wrap { height: 200px; }
+  .product-fashion .info { padding: 0.5rem 0.75rem; }
+}
+@keyframes fadeIn {
+  0% { opacity: 0; transform: scale(.96); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn .25s ease-out;
+}
+
+.animate-slideUp {
+  animation: slideUp .3s ease-out;
+}
+

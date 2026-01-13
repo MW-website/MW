@@ -1,0 +1,27 @@
+{
+  "boss": true,
+  "curly": false,
+  "eqeqeq": true,
+  "eqnull": true,
+  "esversion": 2020,
+  "immed": true,
+  "latedef": false,
+  "newcap": true,
+  "noarg": true,
+  "node": true,
+  "nonbsp": true,
+  "nonew": true,
+  "plusplus": false,
+  "strict": false,
+  "undef": false,
+  "unused": false,
+  "laxcomma": true,
+  "laxbreak": true,
+  "laxregex": true,
+  "globalstrict": true,
+  "globals": {
+    "React": true,
+    "ReactDOM": true,
+    "motion": true
+  }
+}
