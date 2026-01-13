@@ -20,28 +20,8 @@ export default function Header() {
   const handleCartOpen = () => { setCartOpen(true); hideCartBadge(); };
   const handleWishlistClick = () => { hideWishBadge(); };
   const handleLogout = () => { logout(); setAccountOpen(false); navigate('/'); };
-      const [mobileOpen, setMobileOpen] = useState(false);
-      const [accountOpen, setAccountOpen] = useState(false);
-      const [hoveredNav, setHoveredNav] = useState(null);
-      const [searchParams] = useSearchParams();
-      const navigate = useNavigate();
-      const currentCategory = searchParams.get("category");
-      const { items, hideBadge: hideCartBadge, showBadge: showCartBadge } = useCart();
-      const { wish, hideBadge: hideWishBadge, showBadge: showWishBadge } = useWishlist();
-      const { user, isAuthenticated, logout } = useAuth();
-      const currentPath = window.location.pathname;
-      const navItems = [
-        { to: "/", label: "Home" },
-        { to: "/about", label: "About" },
-        { to: "/blog", label: "Blog" },
-        { to: "/contact", label: "Contact" },
-        { to: "/faq", label: "FAQ" },
-      ];
-      const handleCartOpen = () => { setCartOpen(true); hideCartBadge(); };
-      const handleWishlistClick = () => { hideWishBadge(); };
-      const handleLogout = () => { logout(); setAccountOpen(false); navigate('/'); };
-      return (
-        <header className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-sm border-b border-gray-100">
+  return (
+    <header className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-sm border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
             {/* LEFT */}
             <div className="hidden lg:flex items-center gap-3 text-gray-600 text-sm">
@@ -206,9 +186,6 @@ export default function Header() {
             </div>
           )}
           <CartBottomSheet open={cartOpen} onClose={() => setCartOpen(false)} />
-        </header>
-      );
-    }
-      <CartBottomSheet open={cartOpen} onClose={() => setCartOpen(false)} />
-
     </header>
+  );
+}
