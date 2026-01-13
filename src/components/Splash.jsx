@@ -24,7 +24,7 @@ export default function Splash() {
       <div className="splash-mw-card glass-card">
         <div className="splash-mw-bounce-wrap">
           <FiShoppingBag size={60} className="splash-mw-icon" />
-          <span className="splash-mw-title font-serif bounce">Modern Wealth</span>
+          <span className="splash-mw-title font-serif bounce">MW Store</span>
         </div>
         <div className="splash-mw-loader-bar">
           <div

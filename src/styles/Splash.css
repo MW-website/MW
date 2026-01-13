@@ -9,7 +9,7 @@
   font-family: var(--font-serif, 'Playfair Display', serif);
   color: #22223b;
   letter-spacing: 2px;
-  animation: bounce 1.1s infinite cubic-bezier(.68,-0.55,.27,1.55);
+  animation: bounce 3.5s infinite cubic-bezier(.68,-0.55,.27,1.55);
   transform-origin: bottom center;
 }
 @keyframes bounce {
