@@ -1,0 +1,100 @@
+.splash-mw-bounce-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 1.7rem;
+}
+.splash-mw-title.bounce {
+  font-size: 2.7rem;
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  color: #22223b;
+  letter-spacing: 2px;
+  animation: bounce 1.1s infinite cubic-bezier(.68,-0.55,.27,1.55);
+  transform-origin: bottom center;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  20% { transform: translateY(-18px); }
+  40% { transform: translateY(-8px); }
+  60% { transform: translateY(-14px); }
+  80% { transform: translateY(-4px); }
+}
+.splash-mw-icon {
+  color: var(--color-mw-muted, #DCC7B5);
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.07));
+}
+.splash-mw-loader-bar {
+  width: 120px;
+  height: 7px;
+  background: #f3e9df;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.splash-mw-loader-bar-inner {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #DCC7B5 0%, #22223b 100%);
+  border-radius: 6px;
+  animation: loader-bar-move 1.3s infinite cubic-bezier(.4,0,.2,1);
+}
+@keyframes loader-bar-move {
+  0% { width: 0%; }
+  60% { width: 100%; }
+  100% { width: 0%; }
+}
+
+.splash-mw-theme {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-mw-beige, #F4EDE7);
+}
+
+.splash-mw-card {
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  border-radius: 18px;
+  box-shadow: var(--shadow-soft, 0 10px 30px rgba(14,12,11,0.06));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 320px;
+}
+
+.splash-mw-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.splash-mw-title {
+  font-size: 2.2rem;
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  color: #22223b;
+  letter-spacing: 1.5px;
+}
+.splash-mw-icon {
+  color: var(--color-mw-muted, #DCC7B5);
+}
+.splash-mw-loader {
+  border: 5px solid #f3e9df;
+  border-top: 5px solid #22223b;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.2rem;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.splash-mw-tagline {
+  font-size: 1.08rem;
+  color: var(--muted, #6b7280);
+  margin-top: 0.5rem;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
