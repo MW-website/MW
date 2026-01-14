@@ -1,3 +1,10 @@
+// Export as productsApi object for compatibility
+export const productsApi = {
+  fetchAll: fetchAllProducts,
+  fetchByCategory: fetchProductsByCategory,
+  fetchById: fetchProductById,
+  search: searchProducts,
+};
 /**
     * @description      : 
     * @author           : fortu

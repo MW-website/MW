@@ -12,13 +12,17 @@
 **/
 // src/App.jsx — MW Header everywhere
 import React from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+function Protected({ children }) {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  return user ? children : <Navigate to="/login" />;
+}
 
 
 import Header from "./components/Header/Header";
 import MiniFooter from "./components/home/MiniFooter";
 import Splash from "./components/Splash";
-
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import CategoryPage from "./pages/CategoryPage";
@@ -36,6 +40,7 @@ import Register from "./pages/Register";
 import OrderHistory from "./pages/OrderHistory";
 import OrderSuccess from "./pages/OrderSuccess";
 import AdminDashboard from "./pages/AdminDashboard";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
 // Scroll to top on every route change
 function ScrollToTop() {
@@ -49,31 +54,25 @@ function ScrollToTop() {
 }
 
 export default function App() {
-  const [showSplash, setShowSplash] = React.useState(true);
-  const location = window.location;
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-      // If at root or blank (no hash/path), ensure we land on homepage
-      if (location.pathname === "" || location.pathname === "/" || location.pathname === "/index.html") {
-        window.history.replaceState({}, '', '/');
-      }
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  function MiniFooterGuard() {
-    const loc = useLocation();
-    return loc.pathname !== "/" ? <MiniFooter /> : null;
-  }
-
-  if (showSplash) {
-    return <Splash />;
-  }
-
   return (
     <BrowserRouter>
+      <AuthProvider>
+        <AppShell />
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}
+
+function MiniFooterGuard() {
+  const loc = useLocation();
+  return loc.pathname !== "/" ? <MiniFooter /> : null;
+}
+
+function AppShell() {
+  const { loading } = useAuth();
+  if (loading) return <Splash />;
+  return (
+    <>
       <ScrollToTop />
       <Header />
       <Routes>
@@ -91,11 +90,11 @@ export default function App() {
         <Route path="/product/:slug" element={<ProductPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/orders" element={<OrderHistory />} />
+        <Route path="/orders" element={<Protected><OrderHistory /></Protected>} />
         <Route path="/order-success" element={<OrderSuccess />} />
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
       <MiniFooterGuard />
-    </BrowserRouter>
+    </>
   );
 }

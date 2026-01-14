@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { authApi } from "../services/api";
+import { authApi, fetchWithAuth } from "../services/api";
 
 const AuthContext = createContext();
 
@@ -8,20 +8,19 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on mount
-    const checkAuth = async () => {
-      try {
-        const data = await authApi.getCurrentUser();
-        setUser(data.user);
-      } catch (error) {
-        // Not logged in or token expired
+    const token = localStorage.getItem("mw_auth_token");
+    if (!token) {
+      setLoading(false); // guest, move on
+      return;
+    }
+    fetchWithAuth("/auth/me")
+      .then(res => res.json())
+      .then(data => setUser(data.user || null))
+      .catch(() => {
+        localStorage.removeItem("mw_auth_token");
         setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const login = async (email, password) => {
