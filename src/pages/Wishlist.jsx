@@ -32,19 +32,21 @@ export default function WishlistPage() {
   const [quickViewId, setQuickViewId] = React.useState(null);
 
   const [items, setItems] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    // Hide the badge notification when the wishlist page is opened
     hideBadge();
   }, [hideBadge]);
 
   React.useEffect(() => {
     let mounted = true;
     async function load() {
+      setLoading(true);
       const all = await fetchAllProducts();
       if (!mounted) return;
       const filtered = all.filter((p) => wish.includes(p.id));
       setItems(filtered);
+      setLoading(false);
     }
     load();
     return () => (mounted = false);
@@ -81,8 +83,15 @@ export default function WishlistPage() {
         </div>
       )}
 
+      {/* Loading */}
+      {loading && (
+        <div className="py-24 text-center text-gray-400">
+          <svg className="mx-auto mb-4 animate-spin" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" strokeOpacity=".2"/><path d="M22 12a10 10 0 0 1-10 10"/></svg>
+          <p className="text-base md:text-lg">Loading your wishlist...</p>
+        </div>
+      )}
       {/* Empty */}
-      {items.length === 0 && (
+      {!loading && items.length === 0 && (
         <div className="py-24 text-center text-[color-mix(in srgb,var(--color-mw-muted) 40%,black)]">
           <p className="text-base md:text-lg">Your wishlist is empty.</p>
           <a

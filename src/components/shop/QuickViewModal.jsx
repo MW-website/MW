@@ -39,30 +39,30 @@ export default function QuickViewModal({ product, onClose }) {
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-fadeIn" onClick={handleBackdropClick}>
-      
-      <div className="bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-100 animate-slideUp" onClick={(e) => e.stopPropagation()}>
-        
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-2 sm:p-4 animate-fadeIn" onClick={handleBackdropClick}>
+
+      <div className="bg-white w-full max-w-xs sm:max-w-lg md:max-w-2xl rounded-xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-100 animate-slideUp" onClick={(e) => e.stopPropagation()}>
+
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
-          <h2 className="font-semibold text-xl text-gray-900">{product.name}</h2>
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+          <h2 className="font-semibold text-lg sm:text-xl text-gray-900 line-clamp-2">{product.name}</h2>
           <button onClick={onClose} className="text-2xl text-gray-500 hover:text-gray-700 transition cursor-pointer">×</button>
         </div>
 
         {/* Content */}
-        <div className="flex flex-col md:flex-row gap-8 p-6">
-          
+        <div className="flex flex-col md:flex-row gap-4 sm:gap-8 p-4 sm:p-6">
+
           {/* Image */}
-          <div className="flex-1">
+          <div className="flex-1 mb-4 md:mb-0 max-w-[220px] mx-auto md:max-w-none">
             <img
               src={product.image}
               alt={product.name}
-              className="rounded-lg w-full h-auto object-cover shadow-md"
+              className="rounded-lg w-full h-auto object-cover shadow-md max-h-48 sm:max-h-64"
             />
           </div>
 
           {/* Info */}
-          <div className="flex-1 space-y-6">
+          <div className="flex-1 space-y-4 sm:space-y-6">
             <div>
               <p className="text-sm text-gray-500 uppercase tracking-wide mb-2">Product Details</p>
               <p className="text-gray-700 leading-relaxed">{product.short}</p>
